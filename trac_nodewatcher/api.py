@@ -11,6 +11,7 @@ class Nodewatcher(Component):
     This component provides nodewatcher integration with Trac.
     """
 
+    # TODO: Make a configuration option
     nodewatcher_base = 'https://nodes.wlan-si.net'
 
     implements(IWikiSyntaxProvider, IRequestFilter)
