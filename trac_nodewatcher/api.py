@@ -11,12 +11,14 @@ class Nodewatcher(Component):
     This component provides nodewatcher integration with Trac.
     """
 
+    nodewatcher_base = 'https://nodes.wlan-si.net'
+
     implements(IWikiSyntaxProvider, IRequestFilter)
 
     # IWikiSyntaxProvider methods
 
     def _format_link(self, formatter, ns, target, label, fullmatch=None):
-        return tag.a(label, href="https://nodes.wlan-si.net/%s" % (target,))
+        return tag.a(label, href="%s/%s" % (self.nodewatcher_base, target))
 
     def get_wiki_syntax(self):
         """Return an iterable that provides additional wiki syntax."""
@@ -46,13 +48,13 @@ class Nodewatcher(Component):
                 return (template, data, content_type)
 
             for field in data.get('fields', []):
-                if field['name'] == 'nodes':
+                if field['name'] == 'nodes' and data['ticket']['nodes']:
                     items = []
                     for i, word in enumerate(re.split(r'([;,\s]+)', data['ticket']['nodes'])):
                         if i % 2:
                             items.append(word)
                         elif word:
-                            items.append(tag.a(word, href="https://nodes.wlan-si.net/nodes/%s" % (word,)))
+                            items.append(tag.a(word, href="%s/nodes/%s" % (self.nodewatcher_base, word)))
                     field['rendered'] = tag(items)
 
         return (template, data, content_type)
