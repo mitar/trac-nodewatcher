@@ -74,7 +74,7 @@ class Nodewatcher(Component):
             elif word:
                 items.append(tag.a(word, href="%s/node/%s" % (self.nodewatcher_base, word)))
 
-        if nodes:
+        if items:
             return tag(items)
         else:
             return None
